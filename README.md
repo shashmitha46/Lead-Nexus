@@ -1,52 +1,87 @@
-# Lead Nexus - A Next.js CRM Starter
+# Lead Nexus - Buyer Lead Management System
 
-This is a starter application for a lead management CRM built with Next.js, ShadCN, Tailwind CSS, and Genkit for AI features.
+A comprehensive lead management system built with Next.js 13 (App Router), TypeScript, and Prisma.
 
-## Getting Started
+## Setup & Installation
 
 ### Prerequisites
+- Node.js v18+
+- PostgreSQL database
+- npm or yarn
 
-- [Node.js](https://nodejs.org/en/) (v18 or later recommended)
-- [npm](https://www.npmjs.com/) (usually comes with Node.js)
-
-### Installation
-
-First, install the project dependencies using npm:
-
-```bash
-npm install
+### Environment Setup
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/leadnexus"
+NEXTAUTH_SECRET="your-secret-here"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-### Running the Development Server
-
-Once the dependencies are installed, you can start the development server:
-
+### Installation Steps
 ```bash
+# Install dependencies
+npm install
+
+# Run database migrations
+npx prisma migrate dev
+
+# Seed initial data (demo user)
+npx prisma db seed
+
+# Start development server
 npm run dev
 ```
 
-This will start the Next.js application in development mode with Turbopack for faster performance.
+## Design & Architecture
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Validation Strategy
+- Form validation using Zod schemas (shared between client/server)
+- Server-side validation in API routes
+- Custom validators for business rules (e.g., budget range validation)
 
-The app also includes Genkit for AI-powered features. To run the Genkit flows in development, use the following command in a separate terminal:
+### Data Flow & State Management
+- SSR-first approach for lead listing and filtering
+- Client-side state for form handling and search
+- URL-synchronized filters and pagination
+- Optimistic updates for status changes
 
-```bash
-npm run genkit:watch
-```
+### Security & Ownership
+- Authentication via NextAuth.js with magic link
+- Row-level security through `ownerId` field
+- Server-side ownership validation on all mutations
+- Rate limiting on create/update actions (10 req/min)
 
-This will start the Genkit development server and watch for any changes to your flows.
+## Features Implementation Status
 
-### Building for Production
+### Completed
+- ✅ Core CRUD operations for leads
+- ✅ Search & filter with server-side pagination
+- ✅ CSV import/export with validation
+- ✅ Basic authentication and ownership checks
+- ✅ Form validation (client + server)
+- ✅ Change history tracking
 
-To create a production build, run:
+### Skipped/Future
+- ❌ File attachments (skipped due to time constraints)
+- ❌ Full-text search (would require additional indexing)
+- ❌ Admin role (focusing on core user flow first)
 
-```bash
-npm run build
-```
+### Testing
+- Unit tests for validation logic
+- Basic E2E tests for critical flows
+- Run tests: `npm test`
 
-And to start the production server:
+## API Rate Limits
+- Create: 10 requests/minute/user
+- Update: 20 requests/minute/user
+- Import: 2 requests/minute/user
 
-```bash
-npm run start
-```
+## Performance Considerations
+- Server-side pagination (10 items/page)
+- Debounced search (300ms)
+- Optimized database queries with proper indexing
+
+## Known Limitations
+- Maximum 200 rows per CSV import
+- Search limited to basic fields (name, email, phone)
+- Single user ownership (no team sharing)
