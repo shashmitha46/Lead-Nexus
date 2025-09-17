@@ -1,0 +1,46 @@
+// Prisma schema for Buyer Lead Intake
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Buyer {
+  id           String        @id @default(uuid())
+  fullName     String
+  email        String?
+  phone        String
+  city         String
+  propertyType String
+  bhk          String?
+  purpose      String
+  budgetMin    Int?
+  budgetMax    Int?
+  timeline     String
+  source       String
+  status       String        @default("New")
+  notes        String?
+  tags         Json?
+  ownerId      String
+  updatedAt    DateTime      @updatedAt
+
+  history      BuyerHistory[]
+}
+
+model BuyerHistory {
+  id        String   @id @default(uuid())
+  buyerId   String
+  changedBy String
+  changedAt DateTime @default(now())
+  diff      Json
+
+  buyer     Buyer    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+
+  @@index([buyerId])
+}
+
+
