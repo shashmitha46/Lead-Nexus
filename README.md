@@ -1,87 +1,83 @@
-# Lead Nexus - Buyer Lead Management System
+# Lead Nexus 
 
-A comprehensive lead management system built with Next.js 13 (App Router), TypeScript, and Prisma.
+Lead Nexus is a powerful, modern, and AI-enhanced starter application for a lead management CRM. Built with a cutting-edge tech stack, it provides a solid foundation for managing buyer leads, tracking their progress through the sales funnel, and leveraging AI to streamline workflows.
 
-## Setup & Installation
+## Features
+
+- **Lead Management**: Create, view, edit, and manage buyer leads with a clean and intuitive interface.
+- **Advanced Filtering & Searching**: Easily find leads with powerful search and filtering capabilities.
+- **AI-Powered Tagging**: Automatically get tag suggestions for your leads based on your notes, powered by Genkit.
+- **Bulk Import/Export**: Import leads from a CSV file and export your lead data with customizable fields.
+- **Lead History**: Track all changes made to a lead, providing a clear audit trail.
+- **Responsive Design**: A fully responsive UI that works seamlessly on desktop and mobile devices.
+- **Modern Tech Stack**: Built with Next.js App Router, React Server Components, ShadCN UI, and Tailwind CSS.
+- **Collapsible Sidebar**: A sleek, collapsible navigation to maximize screen real estate.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **AI**: [Genkit](https://firebase.google.com/docs/genkit)
+- **UI**: [React](https://react.dev/), [ShadCN UI](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Form Management**: [React Hook Form](https://react-hook-form.com/)
+- **Schema Validation**: [Zod](https://zod.dev/)
+- **Icons**: [Lucide React](https://lucide.dev/guide/packages/lucide-react)
+
+## Getting Started
+
+Follow these instructions to get the project up and running on your local machine.
 
 ### Prerequisites
-- Node.js v18+
-- PostgreSQL database
-- npm or yarn
 
-### Environment Setup
-Create a `.env` file in the root directory:
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/leadnexus"
-NEXTAUTH_SECRET="your-secret-here"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
+- [Node.js](https://nodejs.org/en/) (v18 or later recommended)
+- [npm](https://www.npmjs.com/) (usually comes with Node.js)
 
-### Installation Steps
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repository-url>
+    cd <project-directory>
+    ```
+
+2.  **Install the project dependencies:**
+    ```bash
+    npm install
+    ```
+
+### Running the Development Server
+
+The application consists of two main parts: the Next.js frontend and the Genkit AI flows. You'll need to run both concurrently in separate terminal windows.
+
+1.  **Start the Next.js development server:**
+    ```bash
+    npm run dev
+    ```
+    This will start the Next.js application in development mode with Turbopack. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+2.  **Start the Genkit development server:**
+    In a new terminal window, run the following command:
+    ```bash
+    npm run genkit:watch
+    ```
+    This starts the Genkit development server and watches for any changes to your AI flows, making them available to the frontend.
+
+## Available Scripts
+
+- `npm run dev`: Starts the Next.js development server with Turbopack.
+- `npm run build`: Creates a production-ready build of the application.
+- `npm run start`: Starts the production server.
+- `npm run lint`: Lints the codebase for errors and style issues.
+- `npm run genkit:watch`: Starts the Genkit development server in watch mode.
+
+## Building for Production
+
+To create a production build, run:
 ```bash
-# Install dependencies
-npm install
-
-# Run database migrations
-npx prisma migrate dev
-
-# Seed initial data (demo user)
-npx prisma db seed
-
-# Start development server
-npm run dev
+npm run build
 ```
 
-## Design & Architecture
-
-### Validation Strategy
-- Form validation using Zod schemas (shared between client/server)
-- Server-side validation in API routes
-- Custom validators for business rules (e.g., budget range validation)
-
-### Data Flow & State Management
-- SSR-first approach for lead listing and filtering
-- Client-side state for form handling and search
-- URL-synchronized filters and pagination
-- Optimistic updates for status changes
-
-### Security & Ownership
-- Authentication via NextAuth.js with magic link
-- Row-level security through `ownerId` field
-- Server-side ownership validation on all mutations
-- Rate limiting on create/update actions (10 req/min)
-
-## Features Implementation Status
-
-### Completed
-- ✅ Core CRUD operations for leads
-- ✅ Search & filter with server-side pagination
-- ✅ CSV import/export with validation
-- ✅ Basic authentication and ownership checks
-- ✅ Form validation (client + server)
-- ✅ Change history tracking
-
-### Skipped/Future
-- ❌ File attachments (skipped due to time constraints)
-- ❌ Full-text search (would require additional indexing)
-- ❌ Admin role (focusing on core user flow first)
-
-### Testing
-- Unit tests for validation logic
-- Basic E2E tests for critical flows
-- Run tests: `npm test`
-
-## API Rate Limits
-- Create: 10 requests/minute/user
-- Update: 20 requests/minute/user
-- Import: 2 requests/minute/user
-
-## Performance Considerations
-- Server-side pagination (10 items/page)
-- Debounced search (300ms)
-- Optimized database queries with proper indexing
-
-## Known Limitations
-- Maximum 200 rows per CSV import
-- Search limited to basic fields (name, email, phone)
-- Single user ownership (no team sharing)
+And to start the production server:
+```bash
+npm run start
+```
