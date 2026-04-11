@@ -68,6 +68,3 @@ Thumbs.db
 
 # Supabase local config (if any)
 supabase/.env*
-
-# Package lock file
-package-lock.json
